@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./image-slot.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f4ec;
+    --bg-warm: #efe9d9;
+    --ink: #14201a;
+    --ink-soft: #4a5a4a;
+    --green: #7fbf3f;
+    --green-deep: #2f5411;
+    --orange: #ff7a1a;
+    --cream: #fffdf5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { margin: 0; font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: -.01em; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .eyebrow { font-family: 'Caveat', cursive; font-size: 24px; color: var(--orange); font-weight: 700; display: inline-flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ""; width: 32px; height: 2px; background: var(--orange); display: inline-block; }
+
+  /* NAV */
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 0; background: transparent; transition: background .3s, backdrop-filter .3s, padding .3s; }
+  .nav.scrolled { background: rgba(20,32,26,.95); backdrop-filter: blur(10px); padding: 12px 0; }
+  .nav.scrolled .nav-links a, .nav.scrolled .nav-phone { color: var(--cream); }
+  .nav.scrolled .brand img { filter: none; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+  .brand img { height: 56px; width: auto; display: block; transition: height .3s; }
+  .nav.scrolled .brand img { height: 44px; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); position: relative; padding: 6px 0; transition: color .2s; white-space: nowrap; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta { display: flex; align-items: center; gap: 20px; }
+  .nav-phone { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: var(--cream); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s; border: 0; }
+  .btn-primary { background: var(--orange); color: #fff; box-shadow: 0 8px 24px rgba(255,122,26,.35); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,122,26,.5); background: #ff8f3d; }
+  .btn-outline { background: transparent; color: var(--cream); border: 2px solid var(--cream); }
+  .btn-outline:hover { background: var(--cream); color: var(--ink); }
+  .btn-dark { background: var(--ink); color: var(--cream); }
+  .btn-dark:hover { background: var(--green-deep); transform: translateY(-2px); }
+  @media (max-width: 1080px) { .nav-links, .nav-phone { display: none; } .brand img { height: 44px; } }
+
+  /* HERO */
+  .hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; color: var(--cream); display: flex; align-items: flex-end; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,32,26,.55) 0%, rgba(20,32,26,.35) 40%, rgba(20,32,26,.92) 100%); pointer-events: none; }
+  .hero-bg image-slot { width: 100%; height: 100%; }
+  .hero-content { position: relative; z-index: 2; padding: 0 32px 80px; width: 100%; max-width: 1280px; margin: 0 auto; }
+  .hero-eyebrow { font-family: 'Caveat', cursive; font-size: 32px; color: var(--orange); font-weight: 700; margin-bottom: 8px; display: inline-block; transform: rotate(-2deg); }
+  .hero h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(48px, 8vw, 108px); line-height: 1.25; font-weight: 700; margin: 0 0 24px; max-width: 12ch; }
+  .hero h1 .g { color: var(--green); font-style: normal; }
+  .hero h1 .o { color: var(--orange); font-style: normal; }
+  .hero-sub { font-size: 18px; line-height: 1.5; max-width: 42ch; color: rgba(255,253,245,.85); margin: 0 0 36px; }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-scroll { position: absolute; bottom: 32px; right: 32px; z-index: 2; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; writing-mode: vertical-rl; color: rgba(255,253,245,.6); display: flex; align-items: center; gap: 12px; }
+  .hero-scroll::after { content: ""; width: 1px; height: 40px; background: rgba(255,253,245,.4); animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100% { transform: scaleY(1); opacity: .4; } 50% { transform: scaleY(.4); opacity: 1; } }
+
+  /* MARQUEE */
+  .marquee { background: var(--ink); color: var(--cream); padding: 20px 0; overflow: hidden; border-bottom: 1px solid rgba(255,253,245,.1); }
+  .marquee-track { display: flex; gap: 60px; animation: marquee 30s linear infinite; white-space: nowrap; }
+  .marquee-track span { font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px; display: inline-flex; align-items: center; gap: 60px; }
+  .marquee-track span::after { content: "✦"; color: var(--orange); font-style: normal; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* STORY */
+  section { padding: 120px 0; }
+  @media (max-width: 900px) { section { padding: 80px 0; } .hero-content { padding-bottom: 60px; } }
+  .story { background: var(--bg); }
+  .story-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
+  @media (max-width: 900px) { .story-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .story-img { aspect-ratio: 4/5; border-radius: 4px; overflow: hidden; position: relative; }
+  .story-img image-slot { width: 100%; height: 100%; }
+  .story-img .badge { position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 3; box-shadow: 0 12px 40px rgba(255,122,26,.4); animation: rotate 24s linear infinite; }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+  .story-img .badge span { font-family: 'Playfair Display', serif; font-style: italic; font-size: 26px; line-height: 1; }
+  .story-img .badge small { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; margin-top: 6px; }
+  .story h2 { font-size: clamp(40px, 5vw, 68px); line-height: 1.05; margin: 20px 0 24px; font-style: italic; }
+  .story h2 em { color: var(--green); font-style: italic; }
+  .story p { font-size: 17px; line-height: 1.7; color: var(--ink-soft); max-width: 52ch; }
+  .story p + p { margin-top: 18px; }
+  .signature { font-family: 'Caveat', cursive; font-size: 34px; color: var(--ink); margin-top: 32px; display: block; }
+
+  /* MENU */
+  .menu-sec { background: var(--ink); color: var(--cream); position: relative; overflow: hidden; }
+  .menu-sec::before { content: ""; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(127,191,63,.15), transparent 70%); pointer-events: none; }
+  .menu-head { text-align: center; margin-bottom: 80px; }
+  .menu-head h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(48px, 7vw, 88px); line-height: 1; margin: 12px 0 20px; }
+  .menu-head h2 .g { color: var(--green); }
+  .menu-head p { max-width: 52ch; margin: 0 auto; font-size: 17px; line-height: 1.6; color: rgba(255,253,245,.7); }
+  .menu-tabs { display: flex; justify-content: center; gap: 12px; margin-bottom: 48px; flex-wrap: wrap; }
+  .menu-tab { padding: 12px 24px; border-radius: 999px; border: 1px solid rgba(255,253,245,.2); background: transparent; color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: all .2s; }
+  .menu-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .menu-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; gap: 32px; } .menu-head { margin-bottom: 48px; } }
+  .dish { display: flex; flex-direction: column; gap: 16px; transition: transform .3s; }
+  .dish:hover { transform: translateY(-8px); }
+  .dish-img { aspect-ratio: 1; border-radius: 50%; overflow: hidden; position: relative; border: 4px solid rgba(255,253,245,.05); }
+  .dish-img image-slot { width: 100%; height: 100%; }
+  .dish:hover .dish-img { border-color: var(--orange); }
+  .dish-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; border-top: 1px dashed rgba(255,253,245,.2); }
+  .dish h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px; }
+  .dish .price { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--orange); font-weight: 700; }
+  .dish .desc { font-size: 14px; line-height: 1.6; color: rgba(255,253,245,.7); }
+  .dish .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dish .tag { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(127,191,63,.4); color: var(--green); border-radius: 999px; font-weight: 600; }
+  .menu-foot { text-align: center; margin-top: 64px; }
+
+  /* GALLERY MOSAIC */
+  .gallery { background: var(--bg-warm); }
+  .gallery-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; gap: 24px; flex-wrap: wrap; }
+  .gallery-head h2 { font-size: clamp(40px, 5vw, 68px); font-style: italic; max-width: 14ch; }
+  .gallery-head p { max-width: 40ch; color: var(--ink-soft); font-size: 16px; line-height: 1.6; }
+  .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 240px 240px; gap: 16px; }
+  .mosaic > div { overflow: hidden; border-radius: 4px; position: relative; }
+  .mosaic > div image-slot { width: 100%; height: 100%; }
+  .mosaic .m1 { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+  .mosaic .m4 { grid-column: 3 / span 2; }
+  .mosaic > div::after { content: ""; position: absolute; inset: 0; background: rgba(20,32,26,0); transition: background .3s; pointer-events: none; }
+  .mosaic > div:hover::after { background: rgba(20,32,26,.2); }
+  @media (max-width: 700px) { .mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: auto; } .mosaic .m1 { grid-column: 1 / -1; grid-row: auto; height: 300px; } }
+
+  /* VISIT */
+  .visit { background: var(--bg); position: relative; }
+  .visit-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: stretch; }
+  @media (max-width: 900px) { .visit-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .visit-info { padding: 48px 0; }
+  .visit-info h2 { font-size: clamp(40px, 5vw, 68px); font-style: italic; line-height: 1; margin-bottom: 32px; }
+  .visit-info h2 .o { color: var(--orange); }
+  .hours { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(20,32,26,.1); align-items: baseline; }
+  .hours .day { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+  .hours .time { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--ink); }
+  .visit-contact { margin-top: 32px; display: flex; gap: 32px; flex-wrap: wrap; }
+  .visit-contact .c-item small { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; display: block; margin-bottom: 4px; }
+  .visit-contact .c-item a, .visit-contact .c-item span { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--orange); }
+  .visit-map { border-radius: 4px; overflow: hidden; position: relative; min-height: 480px; background: var(--ink); }
+  .visit-map image-slot { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .map-card { position: absolute; bottom: 24px; left: 24px; right: 24px; background: var(--cream); padding: 24px; border-radius: 4px; box-shadow: 0 12px 40px rgba(0,0,0,.15); z-index: 3; }
+  .map-card h4 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; margin-bottom: 4px; }
+  .map-card p { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; }
+  .map-card a { color: var(--orange); font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* REVIEWS */
+  .reviews { background: var(--green-deep); color: var(--cream); text-align: center; }
+  .reviews h2 { font-size: clamp(36px, 4.5vw, 60px); font-style: italic; max-width: 20ch; margin: 16px auto 40px; line-height: 1.1; }
+  .stars { color: var(--orange); font-size: 24px; letter-spacing: 4px; margin-bottom: 16px; }
+  .reviews .quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(24px, 3vw, 34px); line-height: 1.4; max-width: 26ch; margin: 0 auto 24px; }
+  .reviews .cite { font-family: 'Caveat', cursive; font-size: 26px; color: var(--orange); }
+
+  /* BOOM BANNER */
+  .boom { position: relative; padding: 40px 0; background: var(--orange); color: var(--ink); overflow: hidden; }
+  .boom-inner { display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; position: relative; z-index: 2; }
+  .boom-burst { position: relative; width: 220px; height: 220px; flex-shrink: 0; }
+  .boom-burst svg { width: 100%; height: 100%; animation: spin 20s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .boom-burst .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; color: var(--orange); }
+  .boom-burst .center .big { font-size: 56px; line-height: 1; }
+  .boom-burst .center .lil { font-family: 'DM Sans', sans-serif; font-style: normal; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; margin-top: 4px; font-weight: 700; color: var(--cream); }
+  .boom-text { max-width: 540px; }
+  .boom-text .kick { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .boom-text h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(36px, 5vw, 60px); line-height: 1.05; color: var(--ink); margin-bottom: 12px; }
+  .boom-text h2 u { text-decoration: none; background: var(--ink); color: var(--orange); padding: 0 12px; }
+  .boom-text p { font-size: 16px; line-height: 1.5; color: rgba(20,32,26,.8); margin: 0 0 16px; }
+  .boom-code { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px; background: var(--ink); color: var(--orange); font-family: 'DM Sans', sans-serif; font-weight: 700; letter-spacing: .2em; font-size: 14px; border-radius: 999px; }
+  .boom-marquee { position: absolute; top: 0; left: 0; right: 0; padding: 8px 0; background: var(--ink); color: var(--orange); overflow: hidden; }
+  .boom-marquee .t { display: flex; gap: 32px; animation: marquee 20s linear infinite; white-space: nowrap; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; }
+
+  /* APP SECTION */
+  .app { background: var(--ink); color: var(--cream); position: relative; overflow: hidden; }
+  .app::before { content: ""; position: absolute; top: -200px; left: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(255,122,26,.2), transparent 70%); }
+  .app::after { content: ""; position: absolute; bottom: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(127,191,63,.15), transparent 70%); }
+  .app-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; position: relative; z-index: 2; }
+  @media (max-width: 900px) { .app-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .app-phone { position: relative; display: flex; justify-content: center; }
+  .phone-frame { width: 320px; aspect-ratio: 9/19; background: linear-gradient(160deg, #2a3a30, #14201a); border-radius: 40px; padding: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5), inset 0 0 0 2px rgba(255,253,245,.08); position: relative; }
+  .phone-frame::before { content: ""; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 100px; height: 24px; background: #0a1210; border-radius: 999px; z-index: 3; }
+  .phone-screen { width: 100%; height: 100%; background: var(--bg); border-radius: 30px; overflow: hidden; display: flex; flex-direction: column; padding: 44px 16px 16px; gap: 12px; position: relative; }
+  .phone-screen .p-brand { display: flex; align-items: center; gap: 8px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .phone-screen .p-brand::before { content: ""; width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+  .phone-screen .p-hero { padding: 12px; background: var(--ink); color: var(--cream); border-radius: 12px; }
+  .phone-screen .p-hero .kick { font-family: 'Caveat', cursive; color: var(--orange); font-size: 16px; }
+  .phone-screen .p-hero .h { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; line-height: 1; margin: 4px 0 8px; }
+  .phone-screen .p-hero .cta { display: inline-block; padding: 6px 12px; background: var(--orange); color: #fff; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .phone-screen .p-row { display: flex; gap: 8px; overflow: hidden; }
+  .phone-screen .p-chip { padding: 4px 10px; border-radius: 999px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+  .phone-screen .p-chip.o { background: transparent; color: var(--ink); border: 1px solid rgba(20,32,26,.2); }
+  .phone-screen .p-card { padding: 10px; background: var(--cream); border-radius: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .phone-screen .p-card .thumb { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, var(--orange), #ff9a4a); flex-shrink: 0; }
+  .phone-screen .p-card .thumb.g { background: linear-gradient(135deg, var(--green), #a8dc6f); }
+  .phone-screen .p-card .body { flex: 1; min-width: 0; }
+  .phone-screen .p-card .body .n { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 13px; color: var(--ink); }
+  .phone-screen .p-card .body .d { font-size: 10px; color: var(--ink-soft); }
+  .phone-screen .p-card .pr { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--orange); font-size: 14px; }
+  .phone-screen .p-bar { margin-top: auto; padding: 10px; background: var(--orange); color: #fff; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+  .app-content h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(40px, 5vw, 68px); line-height: 1.1; margin: 16px 0 20px; }
+  .app-content h2 .o { color: var(--orange); }
+  .app-content p { font-size: 17px; line-height: 1.6; color: rgba(255,253,245,.75); margin: 0 0 32px; max-width: 44ch; }
+  .app-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+  .app-features li { list-style: none; display: flex; align-items: center; gap: 12px; font-size: 15px; color: rgba(255,253,245,.9); }
+  .app-features li::before { content: "✓"; width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .app-cta-row { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .qr { width: 120px; height: 120px; background: var(--cream); padding: 8px; border-radius: 12px; flex-shrink: 0; }
+  .qr svg { width: 100%; height: 100%; display: block; }
+  .qr-label { font-family: 'Caveat', cursive; font-size: 20px; color: var(--orange); margin-top: 8px; display: block; text-align: center; }
+  .store-badges { display: flex; flex-direction: column; gap: 10px; }
+  .store-btn { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px; background: var(--cream); color: var(--ink); border-radius: 10px; border: 2px solid var(--cream); text-decoration: none; transition: transform .2s, background .2s; min-width: 200px; }
+  .store-btn:hover { transform: translateY(-2px); background: var(--orange); border-color: var(--orange); color: #fff; }
+  .store-btn svg { width: 28px; height: 28px; flex-shrink: 0; }
+  .store-btn .stack { display: flex; flex-direction: column; line-height: 1.1; }
+  .store-btn .stack small { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; opacity: .7; }
+  .store-btn .stack strong { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; font-weight: 700; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: var(--cream); padding: 80px 0 32px; }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  @media (max-width: 780px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+  .foot-brand img { height: 60px; margin-bottom: 20px; }
+  .foot-brand p { color: rgba(255,253,245,.6); font-size: 14px; line-height: 1.6; max-width: 32ch; }
+  .foot-col h5 { font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 16px; }
+  .foot-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .foot-col li { font-size: 14px; color: rgba(255,253,245,.75); }
+  .foot-col a:hover { color: var(--orange); }
+  .foot-bottom { border-top: 1px solid rgba(255,253,245,.1); padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: rgba(255,253,245,.4); letter-spacing: .08em; }
+  .foot-bottom a { margin-left: 20px; }
+
+  /* fade-in on scroll */
+  .fade { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+  .fade.in { opacity: 1; transform: none; }
+</style>
+</helmet>
+
+<div>
+
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="brand"><img src="assets/logo.png" alt="Mehl Fabrik"></a>
+    <div class="nav-links">
+      <a href="#story">Über uns</a>
+      <a href="#menu">Speisekarte</a>
+      <a href="#gallery">Galerie</a>
+      <a href="#app">App</a>
+      <a href="#visit">Besuchen</a>
+    </div>
+    <div class="nav-cta">
+      <a href="tel:0426141969917" class="nav-phone">☏ 04261 / 41 969 17</a>
+      <button class="btn btn-primary">Bestellen</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg">
+    <image-slot id="hero-bg" shape="rect" placeholder="Hero-Foto (Pizza aus dem Ofen, dunkel, warmes Licht)"></image-slot>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">✦ Frisch aus dem Steinofen</span>
+    <h1>Pizza. <span class="g">Pasta.</span><br><span class="o">Baguette.</span></h1>
+    <p class="hero-sub">Handgemacht, mit frischen Zutaten und viel Zeit. Zum Abholen, zur Lieferung — oder direkt bei uns in Rotenburg.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary">Jetzt bestellen →</button>
+      <button class="btn btn-outline">Speisekarte ansehen</button>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</header>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Frisch belegt</span><span>Steinofen · 380°C</span><span>Täglich gebacken</span><span>Lieferung 30 min</span><span>Original italienisch</span>
+    <span>Frisch belegt</span><span>Steinofen · 380°C</span><span>Täglich gebacken</span><span>Lieferung 30 min</span><span>Original italienisch</span>
+  </div>
+</div>
+
+<section class="story fade" id="story">
+  <div class="wrap story-grid">
+    <div class="story-img">
+      <image-slot id="story" shape="rect" placeholder="Foto: Pizzabäcker, Teig, Ofen"></image-slot>
+      <div class="badge"><span>Seit</span><small>2019 · Rotenburg</small><span style="font-size:36px;">'19</span></div>
+    </div>
+    <div>
+      <span class="eyebrow">Unsere Geschichte</span>
+      <h2>Von der Fabrik <em>direkt zu dir</em>.</h2>
+      <p>In der Mehl Fabrik geht's nicht um Schnelligkeit — es geht um Zeit. Zeit, die der Teig braucht, um zu reifen. Zeit, die Tomaten brauchen, um süß zu werden. Zeit, die wir uns nehmen, damit jede Pizza wie eine eigene wird.</p>
+      <p>Frische Zutaten aus der Region, italienische Handwerkskunst, ein 380 Grad heißer Steinofen. Kein Schnickschnack — nur ehrliches Essen, das schmeckt.</p>
+      <span class="signature">— Familie Mehl Fabrik</span>
+    </div>
+  </div>
+</section>
+
+<section class="menu-sec fade" id="menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <span class="eyebrow" style="color: var(--orange);">Unsere Spezialitäten</span>
+      <h2>Aus dem <span class="g">Ofen</span>,<br><em>mit Liebe</em>.</h2>
+      <p>Ein Auszug aus unserer Karte. Vollständige Auswahl mit allen Belägen, Zusatzstoffen und Allergen-Kennzeichen findest du im Bestellsystem.</p>
+    </div>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active">Pizza</button>
+      <button class="menu-tab">Pasta</button>
+      <button class="menu-tab">Baguette</button>
+      <button class="menu-tab">Salate</button>
+      <button class="menu-tab">Desserts</button>
+    </div>
+
+    <div class="menu-grid">
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d1" shape="circle" placeholder="Pizza Margherita von oben"></image-slot></div>
+        <div class="tags"><span class="tag">Klassiker</span><span class="tag">Vegetarisch</span></div>
+        <div class="dish-head"><h3>Margherita</h3><span class="price">8,50 €</span></div>
+        <p class="desc">Tomate, Fior di Latte, frisches Basilikum, kaltgepresstes Olivenöl.</p>
+      </article>
+
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d2" shape="circle" placeholder="Pizza Diavola"></image-slot></div>
+        <div class="tags"><span class="tag" style="border-color: rgba(255,122,26,.6); color: var(--orange);">Scharf</span><span class="tag">Beliebt</span></div>
+        <div class="dish-head"><h3>Diavola</h3><span class="price">10,90 €</span></div>
+        <p class="desc">Tomate, Mozzarella, scharfe Salami, Chili, Oregano, Peperoni.</p>
+      </article>
+
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d3" shape="circle" placeholder="Pizza Tartufo mit Rucola"></image-slot></div>
+        <div class="tags"><span class="tag" style="border-color: rgba(255,122,26,.6); color: var(--orange);">Neu</span></div>
+        <div class="dish-head"><h3>Tartufo</h3><span class="price">13,90 €</span></div>
+        <p class="desc">Trüffelcreme, Mozzarella, Champignons, Rucola, Parmigiano.</p>
+      </article>
+
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d4" shape="circle" placeholder="Pasta Carbonara"></image-slot></div>
+        <div class="tags"><span class="tag">Pasta</span></div>
+        <div class="dish-head"><h3>Carbonara</h3><span class="price">11,50 €</span></div>
+        <p class="desc">Guanciale, Pecorino Romano, Eigelb, schwarzer Pfeffer — ohne Sahne.</p>
+      </article>
+
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d5" shape="circle" placeholder="Baguette überbacken"></image-slot></div>
+        <div class="tags"><span class="tag">Baguette</span></div>
+        <div class="dish-head"><h3>Salami Speciale</h3><span class="price">7,90 €</span></div>
+        <p class="desc">Salami, Mozzarella, Tomate, Zwiebel, Peperoni — überbacken.</p>
+      </article>
+
+      <article class="dish">
+        <div class="dish-img"><image-slot id="d6" shape="circle" placeholder="Tiramisu"></image-slot></div>
+        <div class="tags"><span class="tag">Hausgemacht</span></div>
+        <div class="dish-head"><h3>Tiramisu</h3><span class="price">4,50 €</span></div>
+        <p class="desc">Mascarpone, Espresso, Löffelbiskuit, Marsala, Kakao.</p>
+      </article>
+    </div>
+
+    <div class="menu-foot">
+      <button class="btn btn-primary">Vollständige Karte →</button>
+    </div>
+  </div>
+</section>
+
+<section class="gallery fade" id="gallery">
+  <div class="wrap">
+    <div class="gallery-head">
+      <div>
+        <span class="eyebrow">Aus der Fabrik</span>
+        <h2>Ein Blick <em style="color: var(--green);">hinter</em> den Ofen.</h2>
+      </div>
+      <p>Alles frisch, alles bei uns. Der Teig ruht 24 Stunden, die Tomaten kommen ganz aus Italien, der Basilikum aus dem eigenen Topf.</p>
+    </div>
+    <div class="mosaic">
+      <div class="m1"><image-slot id="g1" shape="rect" placeholder="Pizza im Ofen, Feuer"></image-slot></div>
+      <div><image-slot id="g2" shape="rect" placeholder="Teigkugel"></image-slot></div>
+      <div><image-slot id="g3" shape="rect" placeholder="Frische Zutaten"></image-slot></div>
+      <div class="m4"><image-slot id="g4" shape="rect" placeholder="Fertige Pizza, Draufsicht"></image-slot></div>
+    </div>
+  </div>
+</section>
+
+<section class="boom fade" style="padding: 0;">
+  <div class="boom-marquee">
+    <div class="t">
+      <span>✦ Boom · 3€ Rabatt in der App ✦ Nur diese Woche ✦ Code MEHL3 ✦ Boom · 3€ Rabatt in der App ✦ Nur diese Woche ✦ Code MEHL3</span>
+      <span>✦ Boom · 3€ Rabatt in der App ✦ Nur diese Woche ✦ Code MEHL3 ✦ Boom · 3€ Rabatt in der App ✦ Nur diese Woche ✦ Code MEHL3</span>
+    </div>
+  </div>
+  <div class="wrap boom-inner" style="padding-top: 72px; padding-bottom: 40px;">
+    <div class="boom-burst">
+      <svg viewBox="0 0 200 200">
+        <g fill="#14201a">
+          <path d="M100 0 L110 30 L130 10 L128 40 L155 25 L145 55 L180 50 L160 75 L200 80 L170 95 L200 120 L165 120 L185 150 L155 140 L165 175 L135 155 L130 195 L110 165 L100 200 L90 165 L70 195 L65 155 L35 175 L45 140 L15 150 L40 120 L0 120 L30 95 L0 80 L40 75 L20 50 L55 55 L45 25 L72 40 L70 10 L90 30 Z"/>
+        </g>
+      </svg>
+      <div class="center">
+        <span class="big">3€</span>
+        <span class="lil">Rabatt · App</span>
+      </div>
+    </div>
+    <div class="boom-text">
+      <div class="kick">✦ Boom! Angebot der Woche</div>
+      <h2>Jetzt <u>3€ sparen</u><br>mit der App.</h2>
+      <p>Erste Bestellung über die Mehl Fabrik App? Wir schenken dir 3€ Rabatt auf deinen Warenkorb. Ab 15€ Mindestbestellwert.</p>
+      <span class="boom-code">Code · MEHL3</span>
+    </div>
+  </div>
+</section>
+
+<section class="app fade" id="app">
+  <div class="wrap app-grid">
+    <div class="app-phone">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="p-brand">Mehl Fabrik</div>
+          <div class="p-hero">
+            <span class="kick">Bestellen</span>
+            <div class="h">Frisch aus dem Ofen</div>
+            <span class="cta">3€ Rabatt →</span>
+          </div>
+          <div class="p-row">
+            <span class="p-chip">Pizza</span>
+            <span class="p-chip o">Pasta</span>
+            <span class="p-chip o">Baguette</span>
+          </div>
+          <div class="p-card">
+            <div class="thumb"></div>
+            <div class="body"><div class="n">Diavola</div><div class="d">Salami, Chili</div></div>
+            <div class="pr">10,90 €</div>
+          </div>
+          <div class="p-card">
+            <div class="thumb g"></div>
+            <div class="body"><div class="n">Margherita</div><div class="d">Basilikum, Fior di Latte</div></div>
+            <div class="pr">8,50 €</div>
+          </div>
+          <div class="p-bar">
+            <span>3 Artikel</span>
+            <span>27,40 € →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-content">
+      <span class="eyebrow" style="color: var(--orange);">Mehl Fabrik App</span>
+      <h2>Bequem über die <span class="o">App</span> bestellen.</h2>
+      <p>Speisekarte, Warenkorb, Bezahlung — alles in einer App. Keine Wartezeit am Telefon, keine Missverständnisse, immer die aktuellen Angebote.</p>
+
+      <ul class="app-features">
+        <li>Bestellhistorie & Lieblingsgerichte speichern</li>
+        <li>Live-Status: Bestellt · Im Ofen · Unterwegs · Da</li>
+        <li>Exklusive App-Rabatte & Treuepunkte</li>
+        <li>Kontaktlos zahlen mit Karte, PayPal oder Apple Pay</li>
+      </ul>
+
+      <div class="app-cta-row">
+        <div>
+          <div class="qr">
+            <svg viewBox="0 0 33 33" shape-rendering="crispEdges">
+              <rect width="33" height="33" fill="#fffdf5"/>
+              <g fill="#14201a">
+                <!-- finder tl -->
+                <rect x="1" y="1" width="7" height="7"/><rect x="2" y="2" width="5" height="5" fill="#fffdf5"/><rect x="3" y="3" width="3" height="3"/>
+                <!-- finder tr -->
+                <rect x="25" y="1" width="7" height="7"/><rect x="26" y="2" width="5" height="5" fill="#fffdf5"/><rect x="27" y="3" width="3" height="3"/>
+                <!-- finder bl -->
+                <rect x="1" y="25" width="7" height="7"/><rect x="2" y="26" width="5" height="5" fill="#fffdf5"/><rect x="3" y="27" width="3" height="3"/>
+                <!-- data (decorative pattern) -->
+                <rect x="10" y="1" width="1" height="1"/><rect x="12" y="1" width="2" height="1"/><rect x="16" y="1" width="1" height="1"/><rect x="18" y="1" width="1" height="1"/><rect x="21" y="1" width="2" height="1"/>
+                <rect x="9" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="14" y="3" width="1" height="1"/><rect x="17" y="3" width="3" height="1"/><rect x="22" y="3" width="1" height="1"/>
+                <rect x="10" y="5" width="2" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="15" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/><rect x="23" y="5" width="1" height="1"/>
+                <rect x="9" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="14" y="7" width="1" height="1"/><rect x="16" y="7" width="1" height="1"/><rect x="19" y="7" width="2" height="1"/><rect x="22" y="7" width="1" height="1"/>
+                <rect x="1" y="9" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="13" y="9" width="2" height="1"/><rect x="17" y="9" width="1" height="1"/><rect x="20" y="9" width="1" height="1"/><rect x="24" y="9" width="1" height="1"/><rect x="27" y="9" width="1" height="1"/><rect x="29" y="9" width="1" height="1"/><rect x="31" y="9" width="1" height="1"/>
+                <rect x="2" y="11" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="2" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="15" y="11" width="2" height="1"/><rect x="18" y="11" width="1" height="1"/><rect x="21" y="11" width="1" height="1"/><rect x="23" y="11" width="1" height="1"/><rect x="26" y="11" width="1" height="1"/><rect x="28" y="11" width="1" height="1"/><rect x="30" y="11" width="1" height="1"/>
+                <rect x="1" y="13" width="1" height="1"/><rect x="3" y="13" width="2" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/><rect x="19" y="13" width="1" height="1"/><rect x="22" y="13" width="2" height="1"/><rect x="25" y="13" width="1" height="1"/><rect x="27" y="13" width="1" height="1"/><rect x="29" y="13" width="1" height="1"/><rect x="31" y="13" width="1" height="1"/>
+                <rect x="2" y="15" width="2" height="1"/><rect x="5" y="15" width="1" height="1"/><rect x="8" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="13" y="15" width="1" height="1"/><rect x="15" y="15" width="2" height="1"/><rect x="18" y="15" width="1" height="1"/><rect x="20" y="15" width="1" height="1"/><rect x="23" y="15" width="1" height="1"/><rect x="26" y="15" width="1" height="1"/><rect x="28" y="15" width="2" height="1"/><rect x="31" y="15" width="1" height="1"/>
+                <rect x="1" y="17" width="1" height="1"/><rect x="4" y="17" width="1" height="1"/><rect x="6" y="17" width="2" height="1"/><rect x="9" y="17" width="1" height="1"/><rect x="12" y="17" width="2" height="1"/><rect x="16" y="17" width="1" height="1"/><rect x="18" y="17" width="1" height="1"/><rect x="21" y="17" width="1" height="1"/><rect x="24" y="17" width="1" height="1"/><rect x="27" y="17" width="1" height="1"/><rect x="30" y="17" width="1" height="1"/>
+                <rect x="3" y="19" width="1" height="1"/><rect x="5" y="19" width="1" height="1"/><rect x="7" y="19" width="1" height="1"/><rect x="10" y="19" width="2" height="1"/><rect x="14" y="19" width="1" height="1"/><rect x="17" y="19" width="2" height="1"/><rect x="20" y="19" width="1" height="1"/><rect x="22" y="19" width="1" height="1"/><rect x="25" y="19" width="2" height="1"/><rect x="29" y="19" width="1" height="1"/><rect x="31" y="19" width="1" height="1"/>
+                <rect x="1" y="21" width="2" height="1"/><rect x="4" y="21" width="1" height="1"/><rect x="6" y="21" width="1" height="1"/><rect x="8" y="21" width="1" height="1"/><rect x="11" y="21" width="1" height="1"/><rect x="13" y="21" width="1" height="1"/><rect x="15" y="21" width="1" height="1"/><rect x="18" y="21" width="2" height="1"/><rect x="21" y="21" width="1" height="1"/><rect x="23" y="21" width="1" height="1"/><rect x="26" y="21" width="2" height="1"/><rect x="30" y="21" width="1" height="1"/>
+                <rect x="2" y="23" width="1" height="1"/><rect x="5" y="23" width="2" height="1"/><rect x="9" y="23" width="1" height="1"/><rect x="12" y="23" width="1" height="1"/><rect x="14" y="23" width="2" height="1"/><rect x="17" y="23" width="1" height="1"/><rect x="19" y="23" width="1" height="1"/><rect x="22" y="23" width="1" height="1"/><rect x="25" y="23" width="1" height="1"/><rect x="28" y="23" width="1" height="1"/><rect x="31" y="23" width="1" height="1"/>
+                <rect x="10" y="25" width="1" height="1"/><rect x="13" y="25" width="1" height="1"/><rect x="16" y="25" width="2" height="1"/><rect x="20" y="25" width="1" height="1"/><rect x="22" y="25" width="1" height="1"/><rect x="25" y="25" width="1" height="1"/><rect x="27" y="25" width="2" height="1"/><rect x="30" y="25" width="1" height="1"/>
+                <rect x="11" y="27" width="1" height="1"/><rect x="14" y="27" width="2" height="1"/><rect x="17" y="27" width="1" height="1"/><rect x="19" y="27" width="1" height="1"/><rect x="21" y="27" width="1" height="1"/><rect x="24" y="27" width="1" height="1"/><rect x="26" y="27" width="1" height="1"/><rect x="29" y="27" width="2" height="1"/>
+                <rect x="9" y="29" width="1" height="1"/><rect x="12" y="29" width="1" height="1"/><rect x="15" y="29" width="1" height="1"/><rect x="18" y="29" width="2" height="1"/><rect x="22" y="29" width="1" height="1"/><rect x="24" y="29" width="1" height="1"/><rect x="27" y="29" width="1" height="1"/><rect x="30" y="29" width="1" height="1"/>
+                <rect x="10" y="31" width="2" height="1"/><rect x="14" y="31" width="1" height="1"/><rect x="16" y="31" width="1" height="1"/><rect x="19" y="31" width="1" height="1"/><rect x="21" y="31" width="2" height="1"/><rect x="25" y="31" width="1" height="1"/><rect x="28" y="31" width="1" height="1"/><rect x="31" y="31" width="1" height="1"/>
+              </g>
+            </svg>
+          </div>
+          <span class="qr-label">Scan mich!</span>
+        </div>
+        <div class="store-badges">
+          <a class="store-btn" href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="stack"><small>Download im</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-btn" href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.28c-.37.38-.6.99-.6 1.78v15.87c0 .8.23 1.4.62 1.78l.08.07L12.5 12.9v-.2L3.7 2.2l-.1.08zm10.87 9.62l-2.75 2.75.06.03 3.24 1.85c.94.53 1.7.53 1.7-.02-.02-.55-.75-.55-1.7-.02l-3.24 1.85-.06.03zm-.06-.24l2.81-2.81 3.24 1.85c.93.53.93.55.02 1.08l-3.26 1.87-2.81-2.81zM4.6 21.66c.42.44 1.1.5 1.87.06l9.85-5.6-2.83-2.83-8.89 8.37z"/></svg>
+            <span class="stack"><small>Jetzt bei</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews fade">
+  <div class="wrap">
+    <span class="eyebrow" style="color: var(--orange);">Was Gäste sagen</span>
+    <div class="stars">★ ★ ★ ★ ★</div>
+    <h2>4,8 von 5 bei über 300 Bewertungen.</h2>
+    <p class="quote">„Beste Pizza in Rotenburg. Teig perfekt, Zutaten frisch, Lieferung immer pünktlich."</p>
+    <p class="cite">— Sabine · Google Review</p>
+  </div>
+</section>
+
+<section class="visit fade" id="visit">
+  <div class="wrap visit-grid">
+    <div class="visit-info">
+      <span class="eyebrow">Komm vorbei</span>
+      <h2>Direkt bei uns <span class="o">an der Theke</span>.</h2>
+
+      <div class="hours"><span class="day">Mo – Do</span><span class="time">11:00 – 22:00</span></div>
+      <div class="hours"><span class="day">Fr – Sa</span><span class="time">11:00 – 23:00</span></div>
+      <div class="hours"><span class="day">Sonntag</span><span class="time">12:00 – 22:00</span></div>
+      <div class="hours"><span class="day">Feiertage</span><span class="time">nach Ankündigung</span></div>
+
+      <div class="visit-contact">
+        <div class="c-item">
+          <small>Festnetz</small>
+          <a href="tel:0426141969917">04261 / 41 969 17</a>
+        </div>
+        <div class="c-item">
+          <small>Mobil</small>
+          <a href="tel:0152031555989">01520 / 31 55 989</a>
+        </div>
+        <div class="c-item">
+          <small>Adresse</small>
+          <span>Rotenburg (Wümme)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="visit-map">
+      <image-slot id="map" shape="rect" placeholder="Karte / Foto vom Restaurant außen"></image-slot>
+      <div class="map-card">
+        <h4>Mehl Fabrik</h4>
+        <p>27356 Rotenburg (Wümme)</p>
+        <a href="#">Route planen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo.png" alt="Mehl Fabrik">
+        <p>Handgemachte Pizza, Pasta und Baguettes. Frisch aus dem Steinofen — jeden Tag ab 11:00.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Menü</h5>
+        <ul><li><a href="#menu">Pizza</a></li><li><a href="#menu">Pasta</a></li><li><a href="#menu">Baguette</a></li><li><a href="#menu">Getränke</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h5>Info</h5>
+        <ul><li><a href="#story">Über uns</a></li><li><a href="#visit">Öffnungszeiten</a></li><li><a href="#">Lieferung</a></li><li><a href="#">Catering</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h5>Kontakt</h5>
+        <ul><li>04261 / 41 969 17</li><li>01520 / 31 55 989</li><li>Rotenburg (Wümme)</li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Mehl Fabrik. Alle Rechte vorbehalten.</span>
+      <span><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a></span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 40) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+    document.querySelectorAll('.menu-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+  }
+}
+</script>
+</body>
+</html>

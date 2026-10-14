@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+
+/*
+ * Design-Tokens für Tailwind.
+ * `inline` → Utilities verweisen direkt auf die --scheme-*-Variablen, die der
+ * ColorSchemeProvider aus src/theme/colorScheme.ts setzt. Farben also NICHT
+ * hier ändern, sondern dort.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--scheme-bg);
+  --color-bg-warm: var(--scheme-bg-warm);
+  --color-cream: var(--scheme-cream);
+  --color-ink: var(--scheme-ink);
+  --color-ink-soft: var(--scheme-ink-soft);
+  --color-ink-light: var(--scheme-ink-light);
+  --color-ink-deep: var(--scheme-ink-deep);
+  --color-green: var(--scheme-green);
+  --color-green-soft: var(--scheme-green-soft);
+  --color-green-deep: var(--scheme-green-deep);
+  --color-orange: var(--scheme-orange);
+  --color-orange-soft: var(--scheme-orange-soft);
+  --color-orange-hover: var(--scheme-orange-hover);
+  --color-white: var(--scheme-white);
+  --color-black: var(--scheme-black);
+  --color-slot: var(--scheme-slot);
+  /* semantisch – wechseln mit dem Farbschema */
+  --color-panel: var(--scheme-panel);
+  --color-on-panel: var(--scheme-on-panel);
+  --color-feature: var(--scheme-feature);
+  --color-on-feature: var(--scheme-on-feature);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-script: 'Caveat', cursive;
+  --font-ui: system-ui, -apple-system, sans-serif;
+
+  /* Desktop-first wie im Design: max-lg: = unter 900px usw. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 700px;
+  --breakpoint-md: 780px;
+  --breakpoint-lg: 900px;
+  --breakpoint-xl: 1080px;
+
+  --shadow-btn: 0 8px 24px color-mix(in srgb, var(--scheme-orange) 35%, transparent);
+  --shadow-btn-hover: 0 12px 32px color-mix(in srgb, var(--scheme-orange) 50%, transparent);
+  --shadow-badge: 0 12px 40px color-mix(in srgb, var(--scheme-orange) 40%, transparent);
+  --shadow-phone: 0 30px 80px color-mix(in srgb, var(--scheme-black) 50%, transparent), inset 0 0 0 2px color-mix(in srgb, var(--scheme-cream) 8%, transparent);
+  --shadow-card: 0 2px 8px color-mix(in srgb, var(--scheme-black) 6%, transparent);
+  --shadow-float: 0 12px 40px color-mix(in srgb, var(--scheme-black) 15%, transparent);
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-fast: marquee 20s linear infinite;
+  --animate-spin-slow: spin 20s linear infinite;
+  --animate-spin-badge: spin 24s linear infinite;
+  --animate-scroll-line: scroll-line 2s ease-in-out infinite;
+
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes scroll-line {
+    0%, 100% { transform: scaleY(1); opacity: .4; }
+    50% { transform: scaleY(.4); opacity: 1; }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: only light; /* verhindert automatisches Umfärben durch den Browser-Dark-Mode */
+    line-height: normal; /* Design rechnet mit Browser-Standard statt Tailwinds 1.5 */
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--scheme-bg);
+    color: var(--scheme-ink);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+}
+
+/* Einblenden beim Scrollen – `in` setzt der useFadeIn-Hook */
+@layer components {
+  .fade { opacity: 0; translate: 0 24px; transition: opacity .8s ease, translate .8s ease; }
+  .fade.in { opacity: 1; translate: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .fade { opacity: 1; translate: none; }
+}

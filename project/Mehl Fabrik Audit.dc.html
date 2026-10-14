@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-13082769-55b5-47dc-a8a9-35fa491d296e/styles.css">
+<script src="_ds/industry-13082769-55b5-47dc-a8a9-35fa491d296e/_ds_bundle.js"></script>
+<style>
+  body { background: var(--color-bg); }
+  .doc { max-width: 1200px; margin: 0 auto; padding: var(--space-8) var(--space-6); display: flex; flex-direction: column; gap: var(--space-10); }
+  .kicker { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--color-accent-700); }
+  h1 { font-family: var(--font-heading); font-weight: 600; font-size: clamp(40px, 5vw, 64px); line-height: 1; margin: 0; text-transform: uppercase; letter-spacing: .01em; }
+  h2 { font-family: var(--font-heading); font-weight: 600; font-size: clamp(28px, 3vw, 40px); line-height: 1.05; margin: 0 0 var(--space-4); text-transform: uppercase; letter-spacing: .02em; }
+  h3 { font-family: var(--font-heading); font-weight: 600; font-size: 20px; margin: 0 0 var(--space-2); text-transform: uppercase; letter-spacing: .04em; }
+  p, li { font-size: 15px; line-height: 1.55; color: var(--color-text); text-wrap: pretty; }
+  .lede { font-size: 17px; line-height: 1.55; color: var(--color-neutral-800); max-width: 68ch; }
+  .rule { border: 0; border-top: 1px solid var(--color-neutral-300); margin: 0; }
+  .meta-row { display: flex; gap: var(--space-6); flex-wrap: wrap; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; color: var(--color-neutral-700); }
+  .meta-row span b { color: var(--color-text); font-weight: 600; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .problem { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+  .problem .num { font-family: var(--font-heading); font-size: 44px; line-height: 1; color: var(--color-accent); font-weight: 600; }
+  .problem .sev { display: inline-block; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .1em; font-size: 10px; padding: 2px 8px; border: 1px solid currentColor; }
+  .sev.crit { color: #b23a3a; }
+  .sev.high { color: var(--color-accent-700); }
+  .sev.med { color: var(--color-neutral-700); }
+  .fix { border-top: 1px dashed var(--color-neutral-400); padding-top: var(--space-3); font-size: 14px; }
+  .fix b { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: var(--color-accent-700); display: block; margin-bottom: 4px; }
+  ul.tight { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .check { display: grid; grid-template-columns: 24px 1fr auto; gap: var(--space-3); align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-neutral-200); }
+  .check .box { width: 16px; height: 16px; border: 1.5px solid var(--color-text); margin-top: 3px; }
+  .check .lbl { font-size: 15px; }
+  .check .cat { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .1em; font-size: 10px; color: var(--color-neutral-700); }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+  .frame-label { position: absolute; top: -10px; left: 12px; background: var(--color-bg); padding: 0 8px; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .12em; font-size: 10px; color: var(--color-neutral-700); }
+  .frame { position: relative; padding: var(--space-5); min-height: 420px; }
+  .before { color: var(--color-neutral-700); }
+  .before h4 { font-family: var(--font-heading); font-size: 22px; margin: 0 0 8px; }
+  .before .btn-mock { display: inline-block; padding: 6px 12px; background: #ff6a00; color: #fff; border-radius: 30px; font-size: 13px; }
+  .before .card-mock { padding: 10px; border: 1px solid #ccc; border-radius: 12px; margin-top: 8px; background: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+  .before .h-jumble { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .before .h-jumble b:nth-child(1) { font-size: 28px; }
+  .before .h-jumble b:nth-child(2) { font-size: 26px; color: #ff6a00; }
+  .before .h-jumble b:nth-child(3) { font-size: 30px; }
+  .after-hero { display: flex; flex-direction: column; gap: var(--space-4); }
+  .after-hero .eyebrow { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .18em; font-size: 11px; color: var(--color-accent-700); }
+  .after-hero .headline { font-family: var(--font-heading); font-size: 44px; line-height: .95; text-transform: uppercase; letter-spacing: .01em; margin: 0; }
+  .after-hero .sub { font-size: 15px; color: var(--color-neutral-800); max-width: 42ch; }
+  .after-hero .cta-row { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); }
+  .menu-card { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); min-height: 180px; }
+  .menu-card .price { font-family: var(--font-heading); font-size: 22px; color: var(--color-accent-700); }
+  .menu-card .name { font-family: var(--font-heading); font-size: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .menu-card .desc { font-size: 13px; color: var(--color-neutral-700); line-height: 1.4; }
+  .spec-row { display: grid; grid-template-columns: 60px 1fr; gap: var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-neutral-200); align-items: baseline; }
+  .spec-row .idx { font-family: var(--font-heading); color: var(--color-accent); font-size: 20px; }
+  .spec-row .k { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .1em; font-size: 12px; color: var(--color-neutral-700); margin-bottom: 2px; }
+  .spec-row .v { font-size: 15px; }
+  .mobile-frame { max-width: 320px; margin: 0 auto; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+  .mobile-frame .m-hero { font-family: var(--font-heading); font-size: 32px; line-height: .95; text-transform: uppercase; }
+  .mobile-frame .m-btn { padding: 14px; text-align: center; background: var(--color-accent); color: #fff; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: .1em; font-size: 14px; }
+  .mobile-frame .m-tile { padding: 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  .stat { padding: var(--space-4); display: flex; flex-direction: column; gap: 4px; }
+  .stat .n { font-family: var(--font-heading); font-size: 40px; line-height: 1; color: var(--color-accent); }
+  .stat .l { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--color-neutral-700); }
+  .corners { position: relative; }
+</style>
+</helmet>
+
+<div class="doc">
+
+  <header style="display:flex; flex-direction:column; gap: var(--space-4);">
+    <div class="kicker">Design Audit · Mehl Fabrik</div>
+    <h1>Website-Audit &<br>Redesign-Vorschlag</h1>
+    <p class="lede">Analyse der aktuellen Präsenz mehl-fabrik.de mit Fokus auf Hierarchie, Whitespace, Typografie, Konsistenz und Mobile. Konkrete Fixes, priorisiert nach Umsetzungsaufwand.</p>
+    <div class="meta-row">
+      <span>Ziel · <b>Online-Bestellung</b></span>
+      <span>Kanal · <b>Web, Mobile-first</b></span>
+      <span>Stack (angenommen) · <b>SPA / Bestell-Widget</b></span>
+      <span>Stand · <b>Sep 2026</b></span>
+    </div>
+    <hr class="rule">
+  </header>
+
+  <section>
+    <div class="kicker" style="margin-bottom: 8px;">01 · Diagnose</div>
+    <h2>Was jetzt bremst</h2>
+    <p class="lede" style="margin-bottom: var(--space-6);">Die Seite ist ein SPA mit generischem Bestell-Template. Typische Symptome: schwache Hierarchie, überladene Startseite, uneinheitliche Buttons/Cards, Mobile-Skalierung mit <code>maximum-scale=1.0, user-scalable=no</code> (Accessibility-Verstoß).</p>
+
+    <div class="grid-2">
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">01</span>
+          <span class="sev crit">Kritisch</span>
+        </div>
+        <h3>Zoom deaktiviert</h3>
+        <p><code>maximum-scale=1.0, user-scalable=no</code> im Viewport-Meta blockiert Pinch-Zoom. WCAG 1.4.4 Verstoß, schließt sehbehinderte Nutzer aus.</p>
+        <div class="fix"><b>Fix</b>Meta ersetzen: <code>width=device-width, initial-scale=1, viewport-fit=cover</code>. Keine maximum-scale, kein user-scalable=no.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">02</span>
+          <span class="sev crit">Kritisch</span>
+        </div>
+        <h3>Kein klarer Primär-CTA</h3>
+        <p>Above the fold konkurrieren mehrere Buttons (Bestellen, Kategorien, Kontakt) um dieselbe visuelle Gewichtung. Nutzer scannt statt zu handeln.</p>
+        <div class="fix"><b>Fix</b>Eine dominante Aktion („Jetzt bestellen") als solider Accent-Button. Sekundäres als Ghost/Outline. Kontakt & Info in die Nav.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">03</span>
+          <span class="sev high">Hoch</span>
+        </div>
+        <h3>Typografie ohne Skala</h3>
+        <p>H1, H2 und Body liegen zu nah beieinander. Kategorie-Überschriften unterscheiden sich kaum von Produktnamen. Ergebnis: alles wirkt gleich wichtig.</p>
+        <div class="fix"><b>Fix</b>Feste Skala: H1 48/56, H2 32/40, H3 20/28, Body 16/24. Headings in kondensiertem Schnitt (Barlow Condensed), Body in humanistischem Sans.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">04</span>
+          <span class="sev high">Hoch</span>
+        </div>
+        <h3>Whitespace fehlt</h3>
+        <p>Kategorien, Produktbilder und Text kleben aneinander. Kein rhythmisches Padding, keine sichtbaren Sektionen. Auge findet keinen Anker.</p>
+        <div class="fix"><b>Fix</b>Sektions-Padding min. 64–96px vertikal, 24px zwischen Cards. Content-Container max-width 1200px, zentriert.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">05</span>
+          <span class="sev high">Hoch</span>
+        </div>
+        <h3>Button-System uneinheitlich</h3>
+        <p>Runde Pill-Buttons neben eckigen Blöcken, unterschiedliche Radien, wechselnde Farbintensitäten. Signalisiert dem Auge unterschiedliche Systeme.</p>
+        <div class="fix"><b>Fix</b>Drei Varianten definieren: Primary (solid), Secondary (outline), Ghost. Ein Radius (4px oder 0). Eine Höhe (44px Touch-Target).</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">06</span>
+          <span class="sev high">Hoch</span>
+        </div>
+        <h3>Produkt-Cards inkonsistent</h3>
+        <p>Manche Cards mit Bild, manche ohne. Preise mal fett, mal dünn. Beschreibungen unterschiedlich lang und abgeschnitten mit Ellipsis mitten im Wort.</p>
+        <div class="fix"><b>Fix</b>Ein Card-Layout: Bild 4:3 oder gar keins, Name (H3), Beschreibung (2 Zeilen max mit line-clamp), Preis rechts, Button „In den Warenkorb".</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">07</span>
+          <span class="sev med">Mittel</span>
+        </div>
+        <h3>Kontraste grenzwertig</h3>
+        <p>Graue Beschreibungstexte auf hellem Grund liegen unter 4.5:1. Hover-States kaum unterscheidbar von Default.</p>
+        <div class="fix"><b>Fix</b>Body-Text min. #1d1f20 auf #f2f2f3 (13:1). Muted-Text nicht heller als neutral-700. Hover = Accent-Tint, sichtbar in ≤200ms.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">08</span>
+          <span class="sev med">Mittel</span>
+        </div>
+        <h3>Formulare ohne Struktur</h3>
+        <p>Bestell-/Kontaktformulare mit Label über Input, aber ohne Gruppierung, ohne Fehler-States, ohne Fokus-Ring.</p>
+        <div class="fix"><b>Fix</b>Feste Feldhöhe (48px), sichtbare Focus-Outline (2px accent), inline Validation, Pflichtfelder mit *.</div>
+      </div>
+
+      <div class="card blueprint problem">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span class="num">09</span>
+          <span class="sev med">Mittel</span>
+        </div>
+        <h3>Mobile: horizontales Scrollen</h3>
+        <p>Kategorie-Leiste und Warenkorb rutschen unter 375px aus dem Viewport. Sticky Header überdeckt oberste Zeile beim Anker-Sprung.</p>
+        <div class="fix"><b>Fix</b>Alle Container mit <code>max-width: 100%</code>, <code>overflow-x: hidden</code> am Body. Kategorie als scrollende Tab-Bar mit <code>scroll-snap</code>. Anker-Ziele mit <code>scroll-margin-top</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="kicker" style="margin-bottom: 8px;">02 · Vorher / Nachher</div>
+    <h2>Startseite, oben</h2>
+
+    <div class="compare" style="margin-top: var(--space-4);">
+      <div class="card blueprint frame before">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="frame-label">Vorher · Skizze</span>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <span class="btn-mock">Bestellen</span>
+          <span class="btn-mock" style="background:#e94e1b;">Menü</span>
+          <span class="btn-mock" style="background:#c33;">Kontakt</span>
+        </div>
+        <div class="h-jumble">
+          <b>Willkommen bei Mehl Fabrik</b>
+          <b>JETZT BESTELLEN!!</b>
+          <b>Unsere Kategorien</b>
+        </div>
+        <div class="card-mock">Pizza Margherita · 8,50 € · Klassisch mit Toma…</div>
+        <div class="card-mock">Pizza Salami — 9€ · lecker</div>
+        <div class="card-mock">Bruschetta 5,00€</div>
+        <p style="margin-top:12px; font-size:12px;">→ 3 konkurrierende CTAs, 3 H1-ähnliche Zeilen, Cards mit unterschiedlicher Preis-Formatierung, Beschreibungen abgeschnitten.</p>
+      </div>
+
+      <div class="card blueprint frame">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="frame-label">Nachher · Industry</span>
+        <div class="after-hero">
+          <span class="eyebrow">Steinofen · Lieferung · Abholung</span>
+          <h3 class="headline">Frisch aus<br>der Mehl Fabrik.</h3>
+          <p class="sub">Handgemachte Pizza und Pasta, in 30 Minuten vor der Tür. Bestellung ohne Konto, Zahlung bei Lieferung oder online.</p>
+          <div class="cta-row">
+            <x-import component-from-global-scope="Industry_indust.Button" variant="primary" hint-size="auto,44px">Jetzt bestellen</x-import>
+            <x-import component-from-global-scope="Industry_indust.Button" variant="ghost" hint-size="auto,44px">Zur Karte</x-import>
+          </div>
+          <div class="grid-3" style="margin-top: var(--space-4);">
+            <div class="stat"><span class="n">30</span><span class="l">Min Lieferzeit</span></div>
+            <div class="stat"><span class="n">4.8</span><span class="l">★ Google (312)</span></div>
+            <div class="stat"><span class="n">12€</span><span class="l">Mindestbestellwert</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Produktkarten</h2>
+    <p class="lede" style="margin-bottom: var(--space-5);">Eine Struktur, konsequent angewandt. Kein Bild? Kein Problem — der Rahmen bleibt.</p>
+    <div class="menu-grid">
+      <div class="card blueprint menu-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="tag tag-outline" style="align-self:flex-start;">Klassiker</span>
+        <span class="name">Margherita</span>
+        <p class="desc">Tomate, Mozzarella Fior di Latte, frisches Basilikum, Olivenöl.</p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:auto;">
+          <span class="price">8,50 €</span>
+          <x-import component-from-global-scope="Industry_indust.Button" variant="secondary" hint-size="auto,36px">+ Warenkorb</x-import>
+        </div>
+      </div>
+      <div class="card blueprint menu-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="tag tag-accent" style="align-self:flex-start;">Neu</span>
+        <span class="name">Diavola</span>
+        <p class="desc">Tomate, Mozzarella, scharfe Salami, Chili, Oregano.</p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:auto;">
+          <span class="price">10,90 €</span>
+          <x-import component-from-global-scope="Industry_indust.Button" variant="secondary" hint-size="auto,36px">+ Warenkorb</x-import>
+        </div>
+      </div>
+      <div class="card blueprint menu-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="tag tag-outline" style="align-self:flex-start;">Vegetarisch</span>
+        <span class="name">Funghi</span>
+        <p class="desc">Tomate, Mozzarella, Champignons, Petersilie.</p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:auto;">
+          <span class="price">9,50 €</span>
+          <x-import component-from-global-scope="Industry_indust.Button" variant="secondary" hint-size="auto,36px">+ Warenkorb</x-import>
+        </div>
+      </div>
+      <div class="card blueprint menu-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="tag tag-neutral" style="align-self:flex-start;">Pasta</span>
+        <span class="name">Carbonara</span>
+        <p class="desc">Guanciale, Pecorino, Eigelb, schwarzer Pfeffer. Ohne Sahne.</p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:auto;">
+          <span class="price">11,50 €</span>
+          <x-import component-from-global-scope="Industry_indust.Button" variant="secondary" hint-size="auto,36px">+ Warenkorb</x-import>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Mobile · 375px</h2>
+    <p class="lede" style="margin-bottom: var(--space-5);">Ein CTA pro Bildschirm. Kategorien als scroll-snap-Tabs. Warenkorb als sticky Bottom-Bar mit Anzahl und Summe.</p>
+
+    <div class="compare">
+      <div class="card blueprint" style="padding: var(--space-4);">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="mobile-frame">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-family:var(--font-heading); font-weight:600; text-transform:uppercase; letter-spacing:.08em;">Mehl Fabrik</span>
+            <span style="font-family:var(--font-heading); font-size:12px;">☰</span>
+          </div>
+          <span class="kicker">Lieferung 30 min</span>
+          <h4 class="m-hero">Frisch aus<br>der Fabrik.</h4>
+          <div class="m-btn">Jetzt bestellen</div>
+          <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;">
+            <span class="tag tag-accent">Pizza</span>
+            <span class="tag tag-outline">Pasta</span>
+            <span class="tag tag-outline">Salate</span>
+            <span class="tag tag-outline">Getränke</span>
+          </div>
+          <div class="card blueprint m-tile"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><span style="font-family:var(--font-heading); text-transform:uppercase;">Margherita</span><span style="font-family:var(--font-heading); color:var(--color-accent-700);">8,50 €</span></div>
+          <div class="card blueprint m-tile"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><span style="font-family:var(--font-heading); text-transform:uppercase;">Diavola</span><span style="font-family:var(--font-heading); color:var(--color-accent-700);">10,90 €</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap: var(--space-3);">
+        <div class="spec-row"><span class="idx">01</span><div><div class="k">Viewport</div><div class="v">Zoom erlaubt, kein <code>user-scalable=no</code>.</div></div></div>
+        <div class="spec-row"><span class="idx">02</span><div><div class="k">Ein CTA</div><div class="v">Nur „Jetzt bestellen" im ersten Viewport, volle Breite, 48px hoch.</div></div></div>
+        <div class="spec-row"><span class="idx">03</span><div><div class="k">Kategorien</div><div class="v">Horizontale Tab-Bar mit <code>scroll-snap-type: x mandatory</code>, aktive Kat. mit Accent.</div></div></div>
+        <div class="spec-row"><span class="idx">04</span><div><div class="k">Sticky Warenkorb</div><div class="v">Fixierte Bottom-Bar ab erstem Artikel: „3 Artikel · 27,40 € · Zur Kasse".</div></div></div>
+        <div class="spec-row"><span class="idx">05</span><div><div class="k">Touch-Targets</div><div class="v">Alles klickbare min. 44×44px. Abstand zwischen Tap-Zielen 8px.</div></div></div>
+        <div class="spec-row"><span class="idx">06</span><div><div class="k">Safe Area</div><div class="v"><code>padding-bottom: env(safe-area-inset-bottom)</code> für iPhone-Home-Indicator.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="kicker" style="margin-bottom: 8px;">03 · Umsetzung</div>
+    <h2>Checkliste</h2>
+    <p class="lede" style="margin-bottom: var(--space-4);">Von oben nach unten abarbeiten. Punkte 1–4 sind Blocker, der Rest ist Politur.</p>
+
+    <div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Viewport-Meta fixen.</b> <code>maximum-scale</code> und <code>user-scalable=no</code> entfernen.</span><span class="cat">A11y · 5 min</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Primär-CTA definieren.</b> Ein solider Button „Jetzt bestellen" oben. Alle anderen als Ghost oder in die Nav.</span><span class="cat">Hierarchie · 30 min</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Type-Skala einführen.</b> H1 48px, H2 32px, H3 20px, Body 16px. Line-heights 1.05 / 1.15 / 1.3 / 1.55.</span><span class="cat">Typografie · 1 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Section-Padding vereinheitlichen.</b> Vertikal 80px Desktop / 48px Mobile, Container max-width 1200px zentriert.</span><span class="cat">Whitespace · 1 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Button-System auf 3 Varianten reduzieren.</b> Primary/Secondary/Ghost, ein Radius, feste Höhe 44px.</span><span class="cat">Konsistenz · 2 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Card-Template vereinheitlichen.</b> Ein Layout für alle Produkte, gleiche Preisformatierung (X,XX €), 2-zeilige Beschreibung mit <code>-webkit-line-clamp: 2</code>.</span><span class="cat">Konsistenz · 3 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Kontraste prüfen.</b> Body-Text mind. 4.5:1, Muted-Text 4.5:1 (nicht heller als #6b6f73 auf hellem Grund).</span><span class="cat">A11y · 30 min</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Focus-States sichtbar machen.</b> 2px Outline in Accent-Farbe, offset 2px, überall wo <code>:focus-visible</code> greift.</span><span class="cat">A11y · 30 min</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Mobile Kategorien.</b> Horizontal-Scroll mit scroll-snap, aktive Kat. hervorgehoben.</span><span class="cat">Mobile · 2 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Sticky Warenkorb-Bar.</b> Mobile fixiert unten mit Anzahl + Summe + „Zur Kasse".</span><span class="cat">Mobile · 3 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Formulare überarbeiten.</b> Feste Feldhöhe 48px, sichtbare Fehler unter dem Feld, Erfolg per grünem Häkchen inline.</span><span class="cat">Konsistenz · 2 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Bildern eine Behandlung geben.</b> Alle Produktfotos gleiches Ratio (4:3), gleicher Bildstil (warm, Draufsicht) — oder gar keine Bilder.</span><span class="cat">Konsistenz · variabel</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Anker-Sprünge.</b> <code>scroll-margin-top: 80px</code> auf allen Sektions-IDs, damit sticky Header nicht überdeckt.</span><span class="cat">UX · 10 min</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Loading-States.</b> Skeletons statt Spinner, damit die Struktur schon vor dem Content sichtbar ist.</span><span class="cat">UX · 2 h</span></div>
+      <div class="check"><span class="box"></span><span class="lbl"><b>Performance-Basics.</b> Bilder als WebP, <code>loading="lazy"</code>, Web-Fonts mit <code>font-display: swap</code>.</span><span class="cat">Perf · 1 h</span></div>
+    </div>
+  </section>
+
+  <footer style="display:flex; justify-content:space-between; align-items:baseline; padding-top: var(--space-6); border-top: 1px solid var(--color-neutral-300);">
+    <span class="kicker">Ende · Mehl Fabrik Audit</span>
+    <span style="font-family:var(--font-heading); font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--color-neutral-700);">Priorisierung: 1–4 Blocker · 5–10 Polish · 11–15 Optional</span>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>
